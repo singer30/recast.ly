@@ -1,20 +1,30 @@
 import VideoList from './VideoList.js';
 import exampleVideoData from '../data/exampleVideoData.js';
 import VideoPlayer from './VideoPlayer.js';
+import searchYouTube from '../lib/searchYouTube.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      allVideos: exampleVideoData,
+      allVideos: [],
       currentVideo: exampleVideoData[0]
     };
+
     this.changeCurrentVideo = this.changeCurrentVideo.bind(this);
   }
 
+  componentDidMount() {
+    searchYouTube({query: 'golden retrievers', max: 10, key: 'AIzaSyD67uSYlSY-T7ASgDuVpzvglLjzEGDa3n0'}, (data) => {
+      this.setState({
+        allVideos: data.items,
+        currentVideo: data.items[0]
+      });
+    });
+  }
+
   changeCurrentVideo(video) {
-    console.log(video);
     this.setState({
       currentVideo: video
     });
