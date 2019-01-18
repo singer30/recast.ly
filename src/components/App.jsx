@@ -1,7 +1,9 @@
 import VideoList from './VideoList.js';
 import exampleVideoData from '../data/exampleVideoData.js';
 import VideoPlayer from './VideoPlayer.js';
+import Search from './Search.js';
 import searchYouTube from '../lib/searchYouTube.js';
+import YOUTUBE_API_KEY from '../config/youtube.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -9,14 +11,16 @@ class App extends React.Component {
 
     this.state = {
       allVideos: [],
-      currentVideo: exampleVideoData[0]
+      currentVideo: exampleVideoData[0],
+      query: ''
     };
 
     this.changeCurrentVideo = this.changeCurrentVideo.bind(this);
+    this.changeQuery = this.changeQuery.bind(this);
   }
 
   componentDidMount() {
-    searchYouTube({query: 'golden retrievers', max: 10, key: 'AIzaSyD67uSYlSY-T7ASgDuVpzvglLjzEGDa3n0'}, (data) => {
+    searchYouTube({query: 'golden retrievers', max: 10, key: YOUTUBE_API_KEY}, (data) => {
       this.setState({
         allVideos: data.items,
         currentVideo: data.items[0]
@@ -30,12 +34,25 @@ class App extends React.Component {
     });
   }
 
+  changeQuery(event) {
+    this.setState({
+      query: event.target.value
+    }, () => {
+      searchYouTube({query: this.state.query, max: 10, key: YOUTUBE_API_KEY}, (data) => {
+        this.setState({
+          allVideos: data.items,
+          currentVideo: data.items[0]
+        });
+      });
+    }); 
+  }
+
   render() {
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes here</h5></div>
+            <Search changeQuery={this.changeQuery} value={this.state.query} />
           </div>
         </nav>
         <div className="row">
