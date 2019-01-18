@@ -9,7 +9,6 @@ var searchYouTube = (options, callback) => {
     url: url,
     type: 'GET',
     success: function(data) {
-      console.log('success: ', data);
       callback(data);
     },
     error: function(data) {
