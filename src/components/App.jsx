@@ -10,12 +10,13 @@ class App extends React.Component {
       allVideos: exampleVideoData,
       currentVideo: exampleVideoData[0]
     };
+    this.changeCurrentVideo = this.changeCurrentVideo.bind(this);
   }
 
-  changeCurrentVideo(event) {
-    console.log(event);
+  changeCurrentVideo(video) {
+    console.log(video);
     this.setState({
-      currentVideo: exampleVideoData[event.target.id]
+      currentVideo: video
     });
   }
 
@@ -32,7 +33,7 @@ class App extends React.Component {
             <VideoPlayer video={this.state.currentVideo} />
           </div>
           <div className="col-md-5">
-            <VideoList videos={this.state.allVideos} changeCurrentVideo={this.changeCurrentVideo.bind(this)}/>
+            <VideoList videos={this.state.allVideos} changeCurrentVideo={this.changeCurrentVideo}/>
           </div>
         </div>
       </div>
